@@ -1,33 +1,25 @@
-const userModel= require("../models/user.model")
-const jwt=require("jsonwebtoken")
+const userModel = require("../models/user_model");
+const jwt = require("jsonwebtoken");
 
+module.exports.authUser = async (req, res, next) => {
+    const token = req.cookies?.token || req.headers.authorization?.split(" ")[1];
 
-module.exports.authUser= async(req,res,next)=>{
+    if(!token){
+        return res.status(400).json({ message: "Token Expires SignIn Again" });
+    }
 
-const token = req.cookies?.token || req.headers.authorization?.split(" ")[1];
-
-if(!token){
-
-    return res.status(400).json({message:"Token Expire Re-SignIn"});
-
-}
-try{
-    const decoded=jwt.verify(token,process.env.JWT_SECRET);
-
-    let user=await userModel.findOne({_id:decoded._id});
-
-    if(!user){
-        res.status(401).json({message:"Unauthorize"});
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        let user = await userModel.findOne({ _id: decoded._id });
         
-    } 
-    req.user=user;
-    return next();
-   
-}
-catch(error){
+        if(!user){
+            return res.status(401).json({ message: "Unauthorized Access!!" })
+        }
+        
+       req.user = user;
+       return next();
 
-    return res.status(500).json({error});
-
-}
-
-}
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+};

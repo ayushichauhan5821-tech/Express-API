@@ -1,26 +1,31 @@
 const mongoose = require("mongoose");
-// const dbgr= require("debug");
-// const config=require("config");
+// const dbgr = require("debug");
+// const config = require("config");
 
+// console log method :
 
-
-function connectToDB(){
+function connectToDB() {
     mongoose.connect(process.env.MONGO_URL)
-    .then(()=>{
-        console.log("📊Mongodb connected");
+    .then(() => {
+        console.log("MongoDB Connected!!");
     })
-    .catch((err)=> console.log(err));
+    .catch((err) => {
+        console.log(err);
+    })
 }
 
 
-// function connectToDB(){
-//     mongoose
-//     .connect(`${config.get( "MongoDB_URL")}/ecommerce`)
-//     .then(()=>{
-//         dbgr("Mongodb connected");
+// debugger method :
+
+// function connectToDB() {
+//     mongoose.connect(`${config.get("MongoDB_URL")}/ecommerce`)
+//     .then(() => {
+//         dbgr("MongoDB Connected!!");
 //     })
-//     .catch((err)=> dbgr(err));
+//     .catch((err) => {
+//         dbgr(err);
+//     });
 // }
 
 
-module.exports=connectToDB;
+module.exports = connectToDB;
