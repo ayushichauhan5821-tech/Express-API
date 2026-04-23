@@ -16,22 +16,10 @@ router.get("/all/user" ,usermiddleware.authUser, middleware.authAdmin , adminCon
 router.delete("/user/:id", usermiddleware.authUser, middleware.authAdmin, adminController.deleteUser)
 
 
+//update role -- >create manager
+//router -- service -- controller -- call into router
+router.put("/user/:id/role",usermiddleware.authUser,middleware.authAdmin,adminController.updateUserRole),
 
-//manager creation
-router.post("/manager/create",
-      [
-        body("username").isLength({ min: 4 }).withMessage("Username must be at least 4 characters"),
-        body("email").isEmail().withMessage("Enter a valid email"),
-        // VALIDATION FOR NEW PASSWORD
-        body("newPassword")
-            .optional({ checkFalsy: true }) // Only validates if the field is not empty
-            .isLength({ min: 6 })
-            .withMessage("New password must be at least 6 characters long!!"),
-    ], 
-    usermiddleware.authUser,
-    middleware.authAdmin,
-    adminController.registerManager,
-);
 
 
 module.exports = router;

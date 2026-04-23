@@ -43,4 +43,8 @@ router.put("/update",
     userController.updateUser
 );
 
+// forgot password
+router.post("/forgot-password",middleware.authUser)
+
+
 module.exports = router;
