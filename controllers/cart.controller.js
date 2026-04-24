@@ -1,3 +1,4 @@
+const cartModel = require("../models/cart.model");
 const cartService = require("../services/cart.service");
 
 
@@ -8,6 +9,19 @@ module.exports.AddTocart=async(req,res)=>{
     try {
         const userId = req.user.id;
         const {item}=req.body;
+
+        const Exist = await cartModel.findOne({userId});
+        const existProduct = Exist.items.map((val)=>{
+            const ids = val.productId;
+            return ids;
+        });
+
+        existProduct.forEach((e)=>{
+            if(e.equals(item.productId)){
+                return res.status(400).json({message:"Product Already Is Add into Cart"})
+            }
+        });
+        
         const cart = await cartService.addToCart({userId,item});
 
         return res.status(200).json({message:"add item to cart successfully",cart});
@@ -44,6 +58,7 @@ module.exports.RemoveItem = async (req , res) => {
         const userId = req.user.id;
         const  productId = req.params.id;
         let cart = await cartService.RemoveSingleProduct({userId , productId});
+       
         return res.status(200).json({message: "Remove Items From Cart Successfully"});
         
     } catch (error) {
