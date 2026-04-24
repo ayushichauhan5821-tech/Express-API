@@ -4,14 +4,18 @@ const userMiddleware = require("../../../middlewares/user.middleware");
 const cartController = require("../../../controllers/cart.controller");
 
 //add items 
-router.post("/add",userMiddleware.authUser,cartController.AddTocart)
-
+router.post("/add",userMiddleware.authUser,cartController.AddTocart);
 
 
 //get all items 
+router.get("/all",userMiddleware.authUser,cartController.GetCart)
 
 
-//remove items
+//remove single item from cart
+router.delete("/product/:id",userMiddleware.authUser,cartController.RemoveItem)
 
 
 module.exports=router;
+
+
+
